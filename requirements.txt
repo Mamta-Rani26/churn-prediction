@@ -4,8 +4,10 @@ jinja2
 python-multipart
 itsdangerous
 joblib
-scikit-learn
-pandas
-numpy
+scikit-learn==1.6.1
+scipy==1.15.3
+numpy==2.2.6
+pandas==2.2.3
 openpyxl
 bcrypt
+ 
