@@ -1,0 +1,34 @@
+{% extends "app_base.html" %}{% block title %}Results{% endblock %}
+{% block content %}
+{% set s=data.summary %}{% set m=data.model_metrics %}{% set T=s.total_customers %}
+{% set Tn=T if T else 1 %}
+{% set h=s.high_risk/Tn*100 %}{% set md=s.medium_risk/Tn*100 %}
+<div class="hero"><div><h1>Prediction Results</h1><p>Churn risk analysis completed for {{ T }} customers.</p></div>
+ <div class="chip"><b>{{ s.avg_churn_probability }}% &rarr; {{ s.avg_after_offer }}%</b><small>Average risk before and after offers</small></div></div>
+<div class="stats">
+ <div class="stat t"><small>Total customers</small><b>{{ T }}</b></div>
+ <div class="stat h"><small>High risk</small><b>{{ s.high_risk }}</b></div>
+ <div class="stat m"><small>Medium risk</small><b>{{ s.medium_risk }}</b></div>
+ <div class="stat l"><small>Low risk</small><b>{{ s.low_risk }}</b></div>
+ <div class="stat"><small>Average churn probability</small><b>{{ s.avg_churn_probability }}%</b></div>
+</div>
+{% set drop=(s.avg_churn_probability - s.avg_after_offer)|round(1) %}
+{% if drop>0 %}<div class="insight">Applying the recommended offers reduces the average churn probability by {{ drop }} percentage points.</div>{% endif %}
+<div class="row2">
+ <section class="panel"><h3>Risk distribution</h3>
+  <div class="donut" style="background:conic-gradient(#c62f3b 0 {{ h }}%,#e0a21b {{ h }}% {{ h+md }}%,#15803d {{ h+md }}% 100%)"><div><b>{{ T }}</b><small>customers</small></div></div>
+  <div class="legend"><span><i style="background:#c62f3b"></i>High {{ s.high_risk }}</span><span><i style="background:#e0a21b"></i>Medium {{ s.medium_risk }}</span><span><i style="background:#15803d"></i>Low {{ s.low_risk }}</span></div></section>
+ <section class="panel"><h3>Recommended offers</h3>
+  {% for o in s.offers %}<div class="bar"><div class="t"><span>{{ o.name }}</span><b>{{ o.count }} customers</b></div><div class="tr"><span style="width:{{ o.count/Tn*100 }}%"></span></div></div>
+  {% else %}<p class="empty">No retention offers were needed for this data.</p>{% endfor %}</section>
+</div>
+<section class="panel" style="margin-bottom:22px"><h3>Top 10 customers at risk</h3>
+ <div class="tw"><table><thead><tr><th>Customer ID</th><th>Churn probability</th><th>Risk level</th><th>Recommended offer</th><th>Probability after offer</th></tr></thead><tbody>
+ {% for r in data.top_risk_customers %}<tr>
+  <td>{{ r.customerID if r.customerID is defined else loop.index }}</td><td>{{ r["churn_probability_%"] }}%</td>
+  <td><span class="badge {{ r.risk_level }}">{{ r.risk_level }}</span></td><td>{{ r.recommended_offer }}</td><td>{{ r["probability_after_offer_%"] }}%</td></tr>{% endfor %}
+ </tbody></table></div></section>
+<section class="panel"><h3>Model Performance Evaluation <small>(measured on held-out test data, not on your uploaded file)</small></h3>
+ {% for k in ["accuracy","precision","recall","f1","roc_auc"] %}<div class="bar"><div class="t"><span>{{ k|replace("_"," ")|title }}</span><b>{{ "%.1f"|format(m[k]*100) }}%</b></div><div class="tr"><span style="width:{{ m[k]*100 }}%"></span></div></div>{% endfor %}</section>
+<div class="actions"><a class="btn auto" href="{{ data.download_url }}">Download full report</a><a class="btn alt auto" href="/">Analyze another file</a></div>
+{% endblock %}

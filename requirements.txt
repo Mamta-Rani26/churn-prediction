@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+jinja2
+python-multipart
+itsdangerous
+joblib
+scikit-learn
+pandas
+numpy
+openpyxl
+bcrypt

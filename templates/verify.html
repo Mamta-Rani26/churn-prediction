@@ -1,0 +1,15 @@
+{% extends "auth_base.html" %}{% block title %}Verify email{% endblock %}
+{% block card %}
+<h2>Verify your email</h2><p class="sub">We sent a code to <b>{{ email }}</b>.</p>
+{% if error %}<div class="alert err">{{ error }}</div>{% endif %}
+{% if info %}<div class="alert info">{{ info }}</div>{% endif %}
+<form method="post" action="/verify" data-validate novalidate>
+ <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+ <div class="field"><label for="code">Verification code</label>
+  <input type="text" id="code" name="code" class="otp" data-v="code" inputmode="numeric" maxlength="6" placeholder="······" autocomplete="one-time-code" required><div class="hint" aria-live="polite"></div></div>
+ <button class="btn" type="submit">Verify and continue</button>
+</form>
+<form method="post" action="/resend-otp">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn alt" type="submit">Resend code</button></form>
+<p class="foot"><a href="/login">Back to sign in</a></p>
+{% endblock %}

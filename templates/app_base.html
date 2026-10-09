@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block body %}
+<header class="nav"><div class="in"><div class="logo"><b>C</b> ChurnPredictor</div>
+ <div class="who"><span>{{ user }}</span><form method="post" action="/logout" class="logout-form">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+ <button class="out" type="submit">Sign out</button></form></div></div></header>
+<div class="wrap">{% block content %}{% endblock %}</div>
+<div class="footer">Customer Churn Prediction System &middot; Final Year Project</div>
+{% endblock %}

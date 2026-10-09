@@ -1,0 +1,16 @@
+{% extends "auth_base.html" %}{% block title %}Sign in{% endblock %}
+{% block card %}
+<h2>Welcome back</h2><p class="sub">Sign in to your account to continue.</p>
+{% if error %}<div class="alert err">{{ error }}</div>{% endif %}
+{% if info %}<div class="alert info">{{ info }}</div>{% endif %}
+<form method="post" action="/login" data-validate novalidate>
+ <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+ <div class="field"><label for="email">Email address</label>
+  <input type="email" id="email" name="email" data-v="email" placeholder="name@poornima.edu.in" autocomplete="email" required><div class="hint" aria-live="polite"></div></div>
+ <div class="field"><label for="password">Password</label>
+  <input type="password" id="password" name="password" data-v="password" placeholder="Enter your password" autocomplete="current-password" required><div class="hint" aria-live="polite"></div>
+  <div style="text-align:right;margin-top:6px"><a href="/forgot">Forgot password?</a></div></div>
+ <button class="btn" type="submit">Sign in</button>
+</form>
+<p class="foot">Don't have an account? <a href="/register">Create one</a></p>
+{% endblock %}

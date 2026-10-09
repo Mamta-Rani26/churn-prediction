@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="auth">
+ <aside class="auth-side">
+  <div class="logo"><b>C</b> ChurnPredictor</div>
+  <h1>Customer Churn Prediction System</h1>
+  <p>A machine learning web application that identifies customers likely to leave and recommends the best retention offer.</p>
+  <ul>
+   <li><i>1</i>Upload customer data as an Excel file</li>
+   <li><i>2</i>Get churn probability and risk level for every customer</li>
+   <li><i>3</i>Receive the best retention offer and download the report</li>
+  </ul>
+ </aside>
+ <main class="auth-main"><div class="card">{% block card %}{% endblock %}</div></main>
+</div>
+{% endblock %}

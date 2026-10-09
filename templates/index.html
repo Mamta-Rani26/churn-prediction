@@ -1,0 +1,26 @@
+{% extends "app_base.html" %}{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="hero"><div><h1>Customer Churn Prediction</h1><p>Predict which customers are likely to leave and see the retention offer that reduces their risk the most.</p></div>
+ <div class="chip"><b>{{ metrics_auc }}</b><small>Model ROC-AUC</small></div></div>
+<div class="steps">
+ <div class="step"><div class="n">1</div><div><b>Upload data</b><span>Add an Excel file with customer details.</span></div></div>
+ <div class="step"><div class="n">2</div><div><b>Analyze risk</b><span>The model scores every customer.</span></div></div>
+ <div class="step"><div class="n">3</div><div><b>Take action</b><span>Apply offers and download the report.</span></div></div>
+</div>
+{% if error %}<div class="alert err mb16">{{ error }}</div>{% endif %}
+<div class="grid2">
+ <section class="panel"><h3>Upload customer data</h3>
+  <form method="post" action="/analyze" enctype="multipart/form-data" data-validate data-loading novalidate>
+ <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+   <div class="field"><div class="drop"><b>Select an Excel file (.xlsx, max 5 MB)</b><br>
+    <label for="file" class="sr-only">Excel file</label>
+    <input type="file" id="file" name="file" accept=".xlsx" data-v="file" required></div><div class="hint" aria-live="polite"></div></div>
+   <button class="btn" type="submit">Analyze customers</button>
+  </form></section>
+ <section class="panel"><h3>Required columns</h3>
+  <p style="margin-top:0">Your file must contain these columns. A <code>customerID</code> column is optional.</p>
+  <div class="cols"><span>SeniorCitizen</span><span>Partner</span><span>Dependents</span><span>tenure</span><span>PhoneService</span><span>MultipleLines</span><span>InternetService</span><span>OnlineSecurity</span><span>OnlineBackup</span><span>DeviceProtection</span><span>TechSupport</span><span>StreamingTV</span><span>StreamingMovies</span><span>Contract</span><span>PaperlessBilling</span><span>PaymentMethod</span><span>MonthlyCharges</span><span>TotalCharges</span></div>
+  <a class="btn alt auto" style="margin-top:18px;display:inline-block" href="/template">Download Excel template</a></section>
+</div>
+<div class="overlay" id="overlay"><div><div class="spin"></div><b>Analyzing customers...</b><br><small>This may take a few seconds.</small></div></div>
+{% endblock %}

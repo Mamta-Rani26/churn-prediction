@@ -1,0 +1,12 @@
+{% extends "auth_base.html" %}{% block title %}Forgot password{% endblock %}
+{% block card %}
+<h2>Forgot your password?</h2><p class="sub">Enter your registered email address and we will send you a 6-digit reset code.</p>
+{% if error %}<div class="alert err">{{ error }}</div>{% endif %}
+<form method="post" action="/forgot" data-validate novalidate>
+ <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+ <div class="field"><label for="email">Email address</label>
+  <input type="email" id="email" name="email" data-v="email" placeholder="name@poornima.edu.in" autocomplete="email" required><div class="hint" aria-live="polite"></div></div>
+ <button class="btn" type="submit">Send reset code</button>
+</form>
+<p class="foot"><a href="/login">Back to sign in</a></p>
+{% endblock %}
